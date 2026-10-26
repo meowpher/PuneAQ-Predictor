@@ -32,9 +32,9 @@ Our research objective is to learn a mapping $f_\theta: \mathbb{R}^D \to \mathbb
 Standard $K$-Fold cross-validation randomly shuffles instances across the index set $\{1, \dots, T\}$. In atmospheric chemistry time-series, ambient particulates exhibit profound autocorrelation due to atmospheric inertia ($\text{Corr}(y_t, y_{t-1}) = 0.91$). If observation $t$ is in the validation set while $t-1$ or $t+1$ is assigned to the training set, the model utilizes bidirectional leakage (interpolation across time rather than forecasting forward into the future). This artificially deflates out-of-fold error by $60\text{–}85\%$ and produces disastrous failures when deployed for real-time public health advisories.
 
 ### 3.2.2 Forward-Chaining Formulation & Anti-Leakage Filtration
-To guarantee mathematical causality, we partition the dataset strictly along the historical filtration $\mathcal{F}_t = \sigma(\{y_s, \mathbf{x}_s : s \le t\})$. For $K = 5$ splits, the $k$-th validation fold is trained exclusively on prior temporal observations:
-$$\mathcal{D}_{\text{train}}^{(k)} = \left\{(\mathbf{x}_t, y_t) \;\middle|\; t \le T_k \right\}$$
-$$\mathcal{D}_{\text{val}}^{(k)} = \left\{(\mathbf{x}_t, y_t) \;\middle|\; T_k < t \le T_{k+1} \right\}$$
+To guarantee mathematical causality, we partition the dataset strictly along the historical filtration $\mathcal{F}_t = \sigma(\lbrace y_s, \mathbf{x}_s : s \le t \rbrace)$. For $K = 5$ splits, the $k$-th validation fold is trained exclusively on prior temporal observations:
+$$\mathcal{D}_{\text{train}}^{(k)} = \left\lbrace (\mathbf{x}_t, y_t) \;\middle|\; t \le T_k \right\rbrace$$
+$$\mathcal{D}_{\text{val}}^{(k)} = \left\lbrace (\mathbf{x}_t, y_t) \;\middle|\; T_k < t \le T_{k+1} \right\rbrace$$
 where $T_1 < T_2 < \dots < T_K < T_{K+1} = T$. Under this regime:
 1. Every test prediction is generated strictly out-of-sample forward in time.
 2. All feature engineering rolling statistics operate strictly on $y_{t-1}$ (`shifted by 1 day`), ensuring that no information from time $t$ enters $\mathbf{x}_t$.

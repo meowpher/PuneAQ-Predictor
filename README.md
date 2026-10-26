@@ -45,9 +45,9 @@ Conventional atmospheric regression models fail catastrophically in this operati
 ## 🔬 Key Methodological Innovations
 
 ### 1. Strict Forward-Chaining Temporal Validation (`TimeSeriesSplit`)
-To enforce absolute mathematical causality and reflect real-world operational deployment, the pipeline strictly avoids random shuffling. We partition the chronological filtration $\mathcal{F}_t = \sigma(\{y_s, \mathbf{x}_s : s \le t\})$ across a 5-fold expanding window:
+To enforce absolute mathematical causality and reflect real-world operational deployment, the pipeline strictly avoids random shuffling. We partition the chronological filtration $\mathcal{F}_t = \sigma(\lbrace y_s, \mathbf{x}_s : s \le t \rbrace)$ across a 5-fold expanding window:
 
-$$\mathcal{D}_{\text{train}}^{(k)} = \left\{(\mathbf{x}_t, y_t) \;\middle|\; t \le T_k \right\}, \quad \mathcal{D}_{\text{val}}^{(k)} = \left\{(\mathbf{x}_t, y_t) \;\middle|\; T_k < t \le T_{k+1} \right\}$$
+$$\mathcal{D}_{\text{train}}^{(k)} = \left\lbrace (\mathbf{x}_t, y_t) \;\middle|\; t \le T_k \right\rbrace, \quad \mathcal{D}_{\text{val}}^{(k)} = \left\lbrace (\mathbf{x}_t, y_t) \;\middle|\; T_k < t \le T_{k+1} \right\rbrace$$
 
 - **Zero-Leakage Rolling Windows:** Rolling statistics (3-day and 7-day mean, standard deviation, and peak volatility) are computed strictly on $y_{t-1}$ (`shifted by 1 day`), guaranteeing zero look-ahead contamination.
 - **Causal Dynamic Lag Horizon:** Evaluates backward autoregressive memory ($t-1, t-2, t-7, t-14$) and first-difference momentum ($\Delta y_{t-1, t-2}$).
